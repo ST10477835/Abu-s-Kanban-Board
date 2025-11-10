@@ -1,0 +1,70 @@
+body {
+  font-family: "KidsDoodle";
+  background: url("https://w.wallhaven.cc/full/gj/wallhaven-gjwg7l.jpg")
+    no-repeat center center fixed;
+  background-size: cover;
+
+  h1 {
+  }
+}
+.board {
+  display: flex;
+  justify-content: space-evenly;
+  background: rgb(71, 86, 129);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  min-height: 250px;
+  .field {
+    background: rgb(207, 219, 242);
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    flex: 1;
+    .label {
+      text-align: center;
+      font-size: 20px;
+    }
+    .tasks {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .task {
+        background: rgb(130, 167, 240);
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      button {
+        font-size: 20px;
+        border-radius: 10px;
+        border: none;
+      }
+    }
+  }
+}
+.input {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  input {
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+
+    &::placeholder {
+      font-family: "KidsDoodle";
+    }
+  }
+  button {
+    border-radius: 100%;
+    border: none;
+    width: 38px;
+    font-size: 30px;
+  }
+}

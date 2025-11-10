@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "HooeyDemo"; /* choose ONE clean name */
+  src: local("HooeyDemo"),
+    url("./fonts/HooeyDEMO-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Rumbles";
+  src: local("Rumbles"), url("./fonts/Rumbles.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "KidsDoodle";
+  src: local("KidsDoodle"),
+    url("./fonts/KidsDoodle-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
