@@ -12,7 +12,7 @@ Abu-Ban is a simple Kanban-style task management board built with React and Type
 
 ## Demo
 
-![Screenshot](./screenshot.png)
+![Screenshot](./scr.png)
 *(Add a screenshot of your app here for better presentation)*
 
 ## Installation
