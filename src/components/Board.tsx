@@ -1,127 +1,67 @@
+import React, { useState } from "react";
 import "./Board.scss";
-import { useState } from "react";
 interface Task {
   task: string;
-  id: string;
-  status: string;
-}
-if (!localStorage.getItem("tasks")) {
-  localStorage.setItem("tasks", JSON.stringify([]));
+  hash: string;
+  completionDate?: string | null;
 }
 const Board = () => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const storedTasks = localStorage.getItem("tasks");
-    return storedTasks ? (JSON.parse(storedTasks) as Task[]) : [];
-  });
-  const handleDragStart = (id: string, e: React.DragEvent<HTMLDivElement>) => {
-    e.dataTransfer.setData("text", id);
+  const [dashboard, setDashboard] = useState<Task[]>([
+    { task: "run", hash: "#1234", completionDate: "2025-12-25" },
+  ]);
+  const [inputValue, setInputValue] = useState("");
+  const [inputDate, setInputDate] = useState("");
+  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
   };
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputDate(event.target.value);
   };
-  const handleDragEnd = (
-    status: string,
-    e: React.DragEvent<HTMLDivElement>
-  ) => {
-    e.preventDefault();
-    const list: Task[] = tasks.map((prev) =>
-      prev.id === e.dataTransfer.getData("text")
-        ? { ...prev, status: status }
-        : prev
-    );
-    setTasks(list);
-    localStorage.setItem("tasks", JSON.stringify(list));
+  const hashcodeGenerator = () => {
+    let hash = "";
+    console.log(hash);
+    let random = Math.floor(Math.random() * 100 + 1);
+    hash += inputValue.slice(0, 2) + "-" + inputDate.slice(0, 2) + "-" + random;
+    console.log(hash);
+    return hash;
   };
-  const generateUniqueHash = () => {
-    const timestamp = Date.now().toString(36);
-    const randomString = Math.random().toString(36).substring(2, 9);
-    return `${timestamp}-${randomString}`;
-  };
-  const addTask = (task: string) => {
-    const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-    const newTask = { task, id: generateUniqueHash(), status: "todo" };
-    const updatedTasks = [...tasks, newTask];
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setTasks(updatedTasks); // ❗ update state
-    setInputValue(""); // optional: clear input after adding
-  };
-
-  const removeTask = (id: string) => {
-    let tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-    tasks = tasks.filter((prev) => prev.id !== id);
-    setTasks(tasks);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  };
-  const setup = (status: string) => {
-    return (
-      <div className="tasks">
-        {tasks
-          .filter((curr) => curr.status === status)
-          .map((prev) => {
-            return (
-              <div
-                className="task"
-                draggable
-                onDragStart={(e) => handleDragStart(prev.id, e)}
-              >
-                <span>{prev.task.toUpperCase()}</span>
-                <button onClick={() => removeTask(prev.id)}>⌦</button>
-              </div>
-            );
-          })}
-      </div>
-    );
-  };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setInputValue((e.target as HTMLInputElement).value);
-    }
+  const handleTask = () => {
+    setDashboard([
+      ...dashboard,
+      {
+        task: inputValue,
+        hash: hashcodeGenerator(),
+        completionDate: inputDate === "" ? null : inputDate,
+      },
+    ]);
+    setInputValue("");
+    setInputDate("");
   };
   return (
     <>
-      <h1>Abu-ban: Where tasks go to maybe get done</h1>
-      <div className="board">
-        <div
-          className="field todo"
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDragEnd("todo", e)}
-        >
-          <span className="label">To-Do</span>
-
-          {setup("todo")}
-        </div>
-        <div
-          className="field in-progress"
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDragEnd("in-progress", e)}
-        >
-          <span className="label">In-Progress</span>
-
-          {setup("in-progress")}
-        </div>
-        <div
-          className="field completed"
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDragEnd("completed", e)}
-        >
-          <span className="label">Completed</span>
-
-          {setup("completed")}
-        </div>
-      </div>
-      <div className="input">
+      <div className="main">
         <input
           type="text"
-          placeholder="eg. Running"
           value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={handleValueChange}
+          placeholder="Running..."
         ></input>
-        <button onClick={() => addTask(inputValue)}>+</button>
+        <input
+          type="date"
+          value={inputDate}
+          onChange={handleDateChange}
+        ></input>
+        <button onClick={handleTask}>Add Task Panel</button>
+        <div>
+          Task Dashboard
+          {dashboard.map((item) => {
+            return (
+              <div className="task-panel" key={item.hash}>
+                {item.task}, {item.hash}, {item.completionDate}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );
