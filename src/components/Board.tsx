@@ -9,6 +9,7 @@ const Board = () => {
   const [dashboard, setDashboard] = useState<Task[]>([
     { task: "run", hash: "#1234", completionDate: "2025-12-25" },
   ]);
+  const [inputNotification, setInputNotification] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputDate, setInputDate] = useState("");
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,38 +27,65 @@ const Board = () => {
     return hash;
   };
   const handleTask = () => {
-    setDashboard([
-      ...dashboard,
-      {
-        task: inputValue,
-        hash: hashcodeGenerator(),
-        completionDate: inputDate === "" ? null : inputDate,
-      },
-    ]);
-    setInputValue("");
-    setInputDate("");
+    if (inputValue !== "") {
+      setDashboard([
+        ...dashboard,
+        {
+          task: inputValue,
+          hash: hashcodeGenerator(),
+          completionDate: inputDate === "" ? null : inputDate,
+        },
+      ]);
+      setInputValue("");
+      setInputDate("");
+      setInputNotification(false);
+    } else {
+      setInputNotification(true);
+    }
+  };
+  const handleText = (task: string) => {
+    if (task.length > 30) {
+      return task.charAt(0).toUpperCase() + task.slice(1, 30) + "...";
+    } else {
+      return task.charAt(0).toUpperCase() + task.substring(1);
+    }
+  };
+  const handleDelete = (hash: string) => {
+    dashboard.filter((item) => item.hash !== hash);
   };
   return (
     <>
       <div className="main">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleValueChange}
-          placeholder="Running..."
-        ></input>
-        <input
-          type="date"
-          value={inputDate}
-          onChange={handleDateChange}
-        ></input>
-        <button onClick={handleTask}>Add Task Panel</button>
-        <div>
-          Task Dashboard
+        <div className="control">
+          <div className="task-input">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleValueChange}
+              placeholder="Running..."
+            ></input>
+            <label className={`${inputNotification ? "show" : ""}`}>
+              Please enter you task!
+            </label>
+          </div>
+          <input
+            type="date"
+            value={inputDate}
+            onChange={handleDateChange}
+          ></input>
+          <button onClick={handleTask}>Add Task</button>
+        </div>
+        <div className="task-panel">
           {dashboard.map((item) => {
             return (
-              <div className="task-panel" key={item.hash}>
-                {item.task}, {item.hash}, {item.completionDate}
+              <div className="task-box" key={item.hash}>
+                <label>{item.completionDate}</label>
+                <div className="task">
+                  <div>{handleText(item.task)}</div>
+                  <button onClick={() => handleDelete(item.hash)}>
+                    Delete
+                  </button>
+                </div>
               </div>
             );
           })}

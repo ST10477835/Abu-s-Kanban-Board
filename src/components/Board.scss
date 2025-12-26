@@ -1,4 +1,45 @@
 .main {
   min-height: 100%;
-  border: 10px solid black;
+  border: 1px solid black;
+  .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1px;
+    padding: 10px;
+    .task-input {
+      display: flex;
+      flex-direction: column;
+      .hide {
+        display: none;
+      }
+    }
+    button {
+      border: 1px solid;
+      border-radius: 10px;
+      padding: 5px;
+    }
+  }
+  .task-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 10px;
+    padding: 10px;
+    .task {
+      border: 1px solid grey;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      max-width: 70vh;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        border: 1px solid;
+        border-radius: 10px;
+        padding: 5px;
+      }
+    }
+  }
 }

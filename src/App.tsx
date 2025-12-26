@@ -1,11 +1,7 @@
-import Board from "./components/Board";
+import DashBoard from "./components/DashBoard";
 import "./index.scss";
 const App = () => {
-  return (
-    <div>
-      <Board />
-    </div>
-  );
+  return <DashBoard />;
 };
 
 export default App;
