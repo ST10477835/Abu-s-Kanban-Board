@@ -6,9 +6,7 @@ interface Task {
   completionDate?: string | null;
 }
 const Board = () => {
-  const [dashboard, setDashboard] = useState<Task[]>([
-    { task: "run", hash: "#1234", completionDate: "2025-12-25" },
-  ]);
+  const [dashboard, setDashboard] = useState<Task[]>([]);
   const [inputNotification, setInputNotification] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputDate, setInputDate] = useState("");
@@ -28,7 +26,7 @@ const Board = () => {
   };
   const handleTask = () => {
     if (inputValue !== "") {
-      setDashboard([
+      setDashboard((dashboard) => [
         ...dashboard,
         {
           task: inputValue,
@@ -44,8 +42,8 @@ const Board = () => {
     }
   };
   const handleText = (task: string) => {
-    if (task.length > 30) {
-      return task.charAt(0).toUpperCase() + task.slice(1, 30) + "...";
+    if (task.length > 10) {
+      return task.charAt(0).toUpperCase() + task.slice(1, 10) + "...";
     } else {
       return task.charAt(0).toUpperCase() + task.substring(1);
     }
